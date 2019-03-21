@@ -1,5 +1,6 @@
 import React ,{ Component } from 'react';
 import Counter from './counter';
+import Title from './Title';
 class Counters extends Component {
 
   state={
@@ -16,18 +17,31 @@ class Counters extends Component {
     const new_counter=this.state.counter.filter (c=>c.id !==id)
   this.setState({ counter:new_counter });
   };
-  add=(data)=>{
+  mines=(data)=>{
       const counter=[...this.state.counter];
 
       const index = counter.indexOf(data);
        counter[index]={...data};
-      counter[index].value++;
+       if(counter[index].value>0)
+      counter[index].value--;
       this.setState({ counter });
 
 
 
 //  this.setState({ counter:new_counter });
   };
+  add=(data)=>{
+    const counter=[...this.state.counter];
+
+    const index = counter.indexOf(data);
+     counter[index]={...data};
+    counter[index].value++;
+    this.setState({ counter });
+
+
+
+//  this.setState({ counter:new_counter });
+};
   reset=()=>{
     let reset_counter= [
         {id:1,value:0},
@@ -41,25 +55,34 @@ class Counters extends Component {
   };
 
   render ()  {
-
+    let styles={
+      margin:'20px'
+    };
     return (
 
+     
       <div>
+        <Title title="Counter" />
         <div>
           <button onClick={this.reset} className="btn btn-info btn-sm m-2">Reset</button>
       </div>
+      <div className="row ">
         {this.state.counter.map(data=>
+        
+        <div style={styles} className="col-md-4  card">
           <Counter key={data.id}
             onDelete={this.delete}
             onReset={this.reset}
             onAdd={this.add}
+            onmines={this.mines}
             counter={data}  >
-          <h4 key={data.id}>{data.value}</h4>
+          
           </Counter>
-
+          </div>
+          
         )
           }
-
+         </div>
       </div>
     );
   }
